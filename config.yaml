@@ -9,31 +9,55 @@ project:
   name: mlfungen
   course: COMS W4762 Machine Learning for Functional Genomics
 
+# Scope for this stage: K562 only. HepG2 is out of scope.
 dataset:
   source: ENCODE
   encode_experiment: ENCSR000AEO
   cell_line: K562
-  # TODO: Fill these in after checking the ENCODE portal metadata for
-  # ENCSR000AEO: one processed BAM per biological replicate, all from the
-  # same pipeline run / genome assembly / annotation version.
+  # Accessions checked against the ENCODE portal and GEO; the BAM pair passed
+  # the compatibility checks in docs/encode_inputs.md. Both are GRCh38 /
+  # GENCODE V29 alignments from one released pipeline run, paired-end 2x100.
+  library:
+    type: polyA plus RNA-seq
+    strandedness: reverse          # dUTP; read 1 is antisense to the transcript
+    layout: paired-end
+    read_length_per_mate: 100
   replicates:
     rep1:
       biological_replicate: 1
-      encode_file_accession: null   # TODO: ENCFF... (verify on portal)
+      encode_library: ENCLB059ZZZ
+      geo_sample: GSM2072366
+      encode_file_accession: ENCFF864OUS
     rep2:
       biological_replicate: 2
-      encode_file_accession: null   # TODO: ENCFF... (verify on portal)
+      encode_library: ENCLB060ZZZ
+      geo_sample: GSM2072367
+      encode_file_accession: ENCFF696CSX
 
 reference:
-  # Deliberately left unset. implementation_plan.md suggests using ENCODE's
-  # processed GRCh38 BAMs, but the assembly must be confirmed from the
-  # metadata of the specific BAM files we pick. The FASTA and GTF must match
-  # the assembly and annotation version ENCODE used for alignment.
-  genome_build: null              # TODO: verify from ENCODE BAM metadata
-  annotation_source: null         # TODO: e.g. GENCODE; verify version used by ENCODE
-  annotation_version: null        # TODO
-  genome_fasta: null              # TODO: path under data/raw/ once chosen
-  annotation_gtf: null            # TODO: path under data/raw/ once chosen
+  # Verified against the BAM headers (docs/encode_inputs.md). hg19 BAMs also
+  # exist for this experiment; do not mix them in.
+  genome_build: GRCh38
+  annotation_source: GENCODE
+  annotation_version: v29
+  # ENCODE file identifiers; the files are not downloaded yet.
+  annotation_id: gencode.v29.primary_assembly.annotation_UCSC_names
+  genome_fasta_id: GRCh38_no_alt_analysis_set_GCA_000001405.15
+  # Where the files will be put (placeholders, relative to the repo root).
+  # The FASTA is a plain gzip: extract the contigs you need first
+  # (src/validation/stream_fasta.py) or decompress and index it.
+  annotation_gtf: data/raw/gencode.v29.primary_assembly.annotation_UCSC_names.gtf.gz
+  genome_fasta: data/raw/GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta.gz
+  contig_naming: chr           # chr1, chr2, ... in BAM, GTF and FASTA
+
+mcsplicer:
+  # Settings verified on the small K562 subset; see docs/mcsplicer_notes.md.
+  sigcount_binary: sigcount    # not sigcount_pe; identical output on paired data
+  read_len: 100                # length of one mate, not the fragment
+  # sigcount ignores library strand, so each BAM is split by inferred
+  # transcript strand and counted per strand against that strand's genes.
+  stranded_preprocessing: true
+  strand_rule: read1_reverse_or_read2_forward_is_plus
 
 sequence:
   # Total context lengths (bp) to compare. Same values as SpliceAI's
@@ -43,15 +67,21 @@ sequence:
   context_lengths: [80, 400, 2000, 10000]
 
 splits:
-  # Planned in implementation_plan.md (from instructor feedback): use the
-  # SpliceAI/Pangolin test chromosomes so pretrained baselines have not seen
-  # the test sites. Validation chromosomes are not chosen yet.
+  # PROVISIONAL. Taken from implementation_plan.md (instructor feedback:
+  # SpliceAI/Pangolin test chromosomes). Not re-checked against those papers,
+  # and not final until we know how many usable splice sites each chromosome
+  # has. Validation chromosomes are not chosen yet.
   test_chromosomes: [chr1, chr3, chr5, chr7, chr9]
   validation_chromosomes: null    # TODO: choose 1-2 chromosomes not in test
   # TODO: decide how to handle chrX, chrY, chrM and unplaced contigs.
 
 labels:
-  # TODO: set after inspecting McSplicer output and replicate agreement.
+  # First regression task: internal acceptor usage only. McSplicer donor values
+  # are near-binary in this release (docs/mcsplicer_notes.md), so donors stay in
+  # QC/reporting but not in the regression dataset.
+  target_site_type: acceptor
+  report_site_types: [acceptor, donor]
+  # Not decided yet on purpose; set after looking at the real data.
   min_read_support: null
   combine_replicates: null        # TODO: decide after replicate comparison
 

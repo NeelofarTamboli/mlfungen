@@ -1,5 +1,16 @@
 # Implementation Plan: Predicting Quantitative Splice-Site Usage from Sequence
 
+> **Note (2026-11-11):** this plan was written before any input was checked.
+> For now the project is K562 only, so every HepG2 item below is out of scope.
+> GRCh38, the test chromosomes, the McSplicer steps and the coverage cutoff are
+> still unverified or undecided. See `docs/mcsplicer_notes.md` and
+> `docs/encode_inputs.md` for what has been checked.
+>
+> Decisions since then: the first regression target is internal **acceptor** usage
+> only (McSplicer donor values are near-binary), and K562 reads are counted
+> strand-aware (BAM split by transcript strand before sigcount). Read every
+> "donor and acceptor" below with that in mind.
+
 This plan is based on the proposal and the professor's comments. Items marked **[Prof]** come from the professor's feedback and are new compared to the proposal.
 
 ---
