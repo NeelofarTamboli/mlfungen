@@ -218,3 +218,109 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# =====================================================================
+# Project-specific rules (mlfungen)
+# Biological data and generated outputs must never be committed.
+# =====================================================================
+
+# --- Data directories: keep the folder structure, ignore the contents ---
+/data/**
+!/data/
+!/data/*/
+!/data/**/.gitkeep
+
+# --- Sequencing reads and alignments ---
+*.fastq
+*.fq
+*.fastq.gz
+*.fq.gz
+*.sra
+*.bam
+*.bai
+*.csi
+*.sam
+*.cram
+*.crai
+
+# --- Reference genomes and annotations ---
+*.fa
+*.fasta
+*.fna
+*.fa.gz
+*.fasta.gz
+*.fna.gz
+*.fai
+*.gzi
+*.2bit
+*.dict
+*.gtf
+*.gtf.gz
+*.gff
+*.gff3
+*.gff.gz
+*.gff3.gz
+
+# --- Genomic tracks and other large data formats ---
+*.bigwig
+*.bw
+*.bigWig
+*.bedgraph
+*.bedGraph
+*.tbi
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.parquet
+*.feather
+*.pkl
+*.pickle
+*.zarr/
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# --- Model checkpoints and training logs ---
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.joblib
+lightning_logs/
+wandb/
+mlruns/
+runs/
+tensorboard/
+
+# --- External tools cloned/built locally (e.g. McSplicer) ---
+/external/
+
+# --- Environments ---
+.conda/
+conda-env/
+*.conda
+environment.local.yml
+
+# --- Credentials and secrets ---
+.netrc
+*.pem
+*.key
+*.p12
+credentials*.json
+service-account*.json
+*secret*
+*.token
+.encode_credentials*
+
+# --- Caches / OS / editor files ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
