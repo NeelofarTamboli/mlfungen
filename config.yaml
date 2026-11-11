@@ -1,0 +1,64 @@
+# Project configuration for the K562 splice-site usage project.
+#
+# Rules for this file:
+#   * Only put values here that have been decided or verified.
+#   * Anything still unknown is `null` with a TODO; do NOT fill in guesses.
+#   * All paths are relative to the repository root.
+
+project:
+  name: mlfungen
+  course: COMS W4762 Machine Learning for Functional Genomics
+
+dataset:
+  source: ENCODE
+  encode_experiment: ENCSR000AEO
+  cell_line: K562
+  # TODO: Fill these in after checking the ENCODE portal metadata for
+  # ENCSR000AEO: one processed BAM per biological replicate, all from the
+  # same pipeline run / genome assembly / annotation version.
+  replicates:
+    rep1:
+      biological_replicate: 1
+      encode_file_accession: null   # TODO: ENCFF... (verify on portal)
+    rep2:
+      biological_replicate: 2
+      encode_file_accession: null   # TODO: ENCFF... (verify on portal)
+
+reference:
+  # Deliberately left unset. implementation_plan.md suggests using ENCODE's
+  # processed GRCh38 BAMs, but the assembly must be confirmed from the
+  # metadata of the specific BAM files we pick. The FASTA and GTF must match
+  # the assembly and annotation version ENCODE used for alignment.
+  genome_build: null              # TODO: verify from ENCODE BAM metadata
+  annotation_source: null         # TODO: e.g. GENCODE; verify version used by ENCODE
+  annotation_version: null        # TODO
+  genome_fasta: null              # TODO: path under data/raw/ once chosen
+  annotation_gtf: null            # TODO: path under data/raw/ once chosen
+
+sequence:
+  # Total context lengths (bp) to compare. Same values as SpliceAI's
+  # context comparison (80 / 400 / 2k / 10k).
+  # TODO: decide and document how the context is placed around the site
+  # (e.g. symmetric flanks, whether the length includes the site itself).
+  context_lengths: [80, 400, 2000, 10000]
+
+splits:
+  # Planned in implementation_plan.md (from instructor feedback): use the
+  # SpliceAI/Pangolin test chromosomes so pretrained baselines have not seen
+  # the test sites. Validation chromosomes are not chosen yet.
+  test_chromosomes: [chr1, chr3, chr5, chr7, chr9]
+  validation_chromosomes: null    # TODO: choose 1-2 chromosomes not in test
+  # TODO: decide how to handle chrX, chrY, chrM and unplaced contigs.
+
+labels:
+  # TODO: set after inspecting McSplicer output and replicate agreement.
+  min_read_support: null
+  combine_replicates: null        # TODO: decide after replicate comparison
+
+paths:
+  data_raw: data/raw              # downloaded inputs (BAM, FASTA, GTF); never committed
+  data_interim: data/interim      # McSplicer intermediate + raw outputs
+  data_processed: data/processed  # final site tables, sequences, splits
+  figures: figures
+  results: results
+  external_tools: external        # local clones of McSplicer etc.; never committed
