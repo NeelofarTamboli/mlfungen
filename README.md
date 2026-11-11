@@ -38,17 +38,21 @@ More detail is in [`implementation_plan.md`](implementation_plan.md).
 ## Current status
 
 - [x] Repository structure, config, `.gitignore`, and requirements
-- [ ] ENCODE file accessions chosen for replicate 1 and replicate 2
-- [ ] Genome build and annotation version confirmed (deliberately **unset**
-      in `config.yaml` until checked against the ENCODE file metadata)
-- [ ] McSplicer installed and tested on its examples and on one chromosome
-- [ ] McSplicer output format verified
-- [ ] Everything after that (dataset, sequences, splits, baselines, CNNs)
+- [x] McSplicer checked from its source and run on its example and on a real K562
+      paired-end subset (`docs/mcsplicer_notes.md`)
+- [x] ENCODE inputs chosen and checked: BAMs ENCFF864OUS / ENCFF696CSX, GRCh38,
+      GENCODE v29, `GRCh38_no_alt_analysis_set_GCA_000001405.15`
+      (`docs/encode_inputs.md`, `config.yaml`)
+- [x] Decided: first regression target is internal **acceptor** usage only (McSplicer
+      donor values are near-binary); K562 reads are counted strand-aware
+- [ ] Download the full BAMs and run the strand-aware McSplicer pipeline
+- [ ] Replicate agreement, then the read-support threshold and replicate combination
+      (deliberately undecided)
+- [ ] Dataset, sequences, splits (test chromosomes are provisional), baselines, CNNs
 
-**No data has been downloaded and there are no results yet.** The Python
-modules contain only docstrings, TODOs, and `NotImplementedError` stubs.
-They will be implemented once the input formats are checked against real
-files.
+**The full BAMs have not been downloaded and there are no model results yet.** The
+pipeline modules in `src/` (except `config.py` and `src/validation/`) are still stubs
+with docstrings and TODOs.
 
 ## Repository structure
 
@@ -57,6 +61,9 @@ mlfungen/
 ├── config.yaml              # project settings (experiment, contexts, splits, paths)
 ├── requirements.txt
 ├── implementation_plan.md   # detailed plan incl. instructor feedback
+├── docs/
+│   ├── mcsplicer_notes.md   # verified McSplicer behaviour + project decisions
+│   └── encode_inputs.md     # ENCODE files, reference files, compatibility checks
 ├── data/                    # NOT committed (only the empty folders are)
 │   ├── raw/                 #   downloaded BAM / FASTA / GTF
 │   ├── interim/             #   McSplicer intermediate and raw outputs
@@ -69,7 +76,8 @@ mlfungen/
 │   ├── parse_mcsplicer.py   # McSplicer CSV -> tidy per-site table
 │   ├── build_dataset.py     # replicate agreement, filtering, labels
 │   ├── extract_sequences.py # windows around each site, one-hot encoding
-│   └── make_splits.py       # chromosome-based splits
+│   ├── make_splits.py       # chromosome-based splits
+│   └── validation/          # small checks used to verify McSplicer and the inputs
 ├── models/
 │   ├── baseline.py          # mean / MaxEntScan / local-feature regression
 │   └── cnn.py               # CNNs per context length (not implemented yet)
@@ -100,7 +108,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Check that the config loads:
+`src/validation` also needs `curl`. Check that the config loads:
 
 ```bash
 python -c "from src.config import load_config; print(load_config()['dataset'])"
