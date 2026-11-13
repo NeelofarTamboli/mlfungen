@@ -4,7 +4,8 @@ Planned metrics, reported separately for donors and acceptors, and also for
 alternative sites only (e.g. usage between 0.1 and 0.9), because sites with
 usage near 1 inflate correlations:
     * Pearson and Spearman correlation, R^2, MAE.
-    * Replicate agreement on the same sites, as an approximate ceiling.
+    * Replicate agreement on the same sites, as a replicate-reproducibility (noise) benchmark to report
+      next to the model numbers; it is not a strict limit on model performance.
     * Mean and spread over random seeds for each context length.
 
 Later analysis: per-site error change between the 400 bp and 10 kb models,

@@ -1,0 +1,12 @@
+total internal acceptors (union of both replicates): 62,557  (rep1 59,384, rep2 60,060; only rep1 2,497, only rep2 3,173)
+matched between replicates: 56,887
+zero-support sites: rep1 17,112, rep2 16,921; among matched: {'rep1': 14777, 'rep2': 13972, 'either': 16916}
+matched with nonzero support in both: 39,971
+also_transcript_start flagged: {'all_sites': 814, 'matched': 749, 'nonzero_in_both': 589}
+clean sites used for QC (primary): 39,382
+agreement, all matched:                n=56,887, Pearson 0.901, Spearman 0.905, median |diff| 0.0222
+agreement, nonzero support in both:    n=39,971, Pearson 0.905, Spearman 0.890, median |diff| 0.0294
+agreement, primary (also not flagged): n=39,382, Pearson 0.905, Spearman 0.890, median |diff| 0.0294
+flagged, nonzero in both:   n=589, Pearson 0.906, Spearman 0.876, median |diff| 0.0332; usage median 0.876, share<0.05 0.048, share>=0.95 0.357, median support 80
+unflagged, nonzero in both: n=39,382, Pearson 0.905, Spearman 0.890, median |diff| 0.0294; usage median 0.852, share<0.05 0.080, share>=0.95 0.329, median support 65
+figures: ['figures/qc_A_replicate_scatter_chr1-4.png', 'figures/qc_B_usage_distribution_chr1-4.png', 'figures/qc_C_support_vs_disagreement_chr1-4.png', 'figures/qc_D_sites_by_support_bin_chr1-4.png', 'figures/qc_E_bootstrap_sd_vs_support_chr1-4.png']

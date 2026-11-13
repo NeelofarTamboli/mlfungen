@@ -28,11 +28,13 @@ dataset:
       encode_library: ENCLB059ZZZ
       geo_sample: GSM2072366
       encode_file_accession: ENCFF864OUS
+      md5: c941a6b12cce8d8dd4fd3fd1ff29e492   # as listed by ENCODE
     rep2:
       biological_replicate: 2
       encode_library: ENCLB060ZZZ
       geo_sample: GSM2072367
       encode_file_accession: ENCFF696CSX
+      md5: 0222c73b629831008bf0d278529e6ef2   # as listed by ENCODE
 
 reference:
   # Verified against the BAM headers (docs/encode_inputs.md). hg19 BAMs also
@@ -48,12 +50,21 @@ reference:
   # (src/validation/stream_fasta.py) or decompress and index it.
   annotation_gtf: data/raw/gencode.v29.primary_assembly.annotation_UCSC_names.gtf.gz
   genome_fasta: data/raw/GRCh38_no_alt_analysis_set_GCA_000001405.15.fasta.gz
+  annotation_md5: 7f3e84122de9f5a56ca4a17b0a44a33c   # re-computed, matches ENCODE
+  genome_fasta_md5: a08035b6a6e31780e96a34008ff21bd6 # as listed by ENCODE
   contig_naming: chr           # chr1, chr2, ... in BAM, GTF and FASTA
 
 mcsplicer:
   # Settings verified on the small K562 subset; see docs/mcsplicer_notes.md.
+  dir: external/McSplicer      # git clone of canzarlab/McSplicer (tested: d6a22c3); git-ignored
   sigcount_binary: sigcount    # not sigcount_pe; identical output on paired data
   read_len: 100                # length of one mate, not the fragment
+  bootstraps: 10               # small on purpose; only used for the bootstrap SD
+  genes_per_chunk: 100         # McSplicer re-reads its whole .cnt for every gene, so
+                               # genes are run in chunks with a trimmed .cnt (same results)
+  chromosomes: [chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11,
+                chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21,
+                chr22, chrX, chrY]
   # sigcount ignores library strand, so each BAM is split by inferred
   # transcript strand and counted per strand against that strand's genes.
   stranded_preprocessing: true
@@ -81,7 +92,8 @@ labels:
   # QC/reporting but not in the regression dataset.
   target_site_type: acceptor
   report_site_types: [acceptor, donor]
-  # Not decided yet on purpose; set after looking at the real data.
+  # Not decided yet on purpose; set after looking at the real data. Choose the read-support threshold
+  # from training/validation chromosomes only, never from the held-out test chromosomes.
   min_read_support: null
   combine_replicates: null        # TODO: decide after replicate comparison
 
