@@ -8,12 +8,3 @@ scikit-learn>=1.3
 matplotlib>=3.7
 pysam>=0.22          # src/validation (BAM handling); also needs curl
 maxentpy @ git+https://github.com/kepbod/maxentpy.git@b5e69aadd745fcd9ee65c9dd0ff21b902a63a825
-
-# Planned later, not installed yet:
-#   torch       - CNN models (models/cnn.py)
-#   pyfaidx - indexed FASTA access, if later code needs arbitrary random access
-#   pangolin    - pretrained Pangolin baseline
-#
-# External tools that are NOT pip packages (install separately, see README):
-#   McSplicer (https://github.com/canzarlab/McSplicer), incl. its exonRefine/sigcount binaries
-#   samtools
