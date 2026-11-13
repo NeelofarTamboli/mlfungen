@@ -29,7 +29,7 @@ This plan is based on the proposal and the professor's comments. Items marked **
 3. **Run McSplicer** on each replicate and cell line. Budget time for its preprocessing; it needs the BAM plus the gene annotation in its own format. Output: a usage value per donor and per acceptor site.
 4. **Filter by coverage and quality control:**
    - Choose a minimum read support per site (e.g., at least 10–20 junction reads).
-   - Compute how well the two replicates agree (Pearson/Spearman). That agreement is the **best score any model can realistically reach**, so report it next to every result.
+   - Compute how well the two replicates agree (Pearson/Spearman). Replicate agreement provides a reproducibility benchmark for the RNA-seq-derived usage labels, so report it next to every result.
    - **[Prof]** **Report how many sites pass the filter in the interim report**, broken down by donor/acceptor and cell line.
 5. **Build the dataset table:** chrom, position, strand, site type, usage per cell line, coverage, gene ID.
 6. **Chromosome split:** use **SpliceAI's and Pangolin's test chromosomes (1, 3, 5, 7, 9)**. Otherwise the pretrained baselines will have seen the test sites during their training, which unfairly helps them. Hold out one or two other chromosomes for validation.
