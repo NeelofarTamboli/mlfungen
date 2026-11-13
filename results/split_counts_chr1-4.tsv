@@ -1,0 +1,5 @@
+split	chrom	n_sites
+test	chr1	14844
+test	chr3	8630
+train	chr2	10872
+validation	chr4	5036

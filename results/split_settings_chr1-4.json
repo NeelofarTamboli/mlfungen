@@ -1,0 +1,12 @@
+{
+  "test_chromosomes": [
+    "chr1",
+    "chr3",
+    "chr5",
+    "chr7",
+    "chr9"
+  ],
+  "validation_chromosomes": [
+    "chr4"
+  ]
+}

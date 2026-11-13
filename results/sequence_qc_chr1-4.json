@@ -1,0 +1,88 @@
+{
+  "n_sites": 39382,
+  "context_lengths": [
+    80,
+    400,
+    2000,
+    10000
+  ],
+  "stored_context_length": 10000,
+  "sequence_shape": [
+    39382,
+    10000
+  ],
+  "sequence_dtype": "uint8",
+  "codebook": {
+    "A": 0,
+    "C": 1,
+    "G": 2,
+    "T": 3,
+    "N": 4
+  },
+  "ambiguous_base_policy": "All non-ACGT symbols, including IUPAC ambiguity codes, are encoded as N=4.",
+  "one_hot_policy": "Created on demand; N=4 maps to [0,0,0,0].",
+  "canonical_acceptors": 39076,
+  "canonical_acceptor_fraction": 0.9922299527703011,
+  "canonical_acceptors_by_strand": {
+    "+": {
+      "n_sites": 19676,
+      "canonical_acceptors": 19528,
+      "canonical_acceptor_fraction": 0.9924781459646269
+    },
+    "-": {
+      "n_sites": 19706,
+      "canonical_acceptors": 19548,
+      "canonical_acceptor_fraction": 0.9919821374200751
+    }
+  },
+  "sites_with_padding": 0,
+  "sites_with_non_acgt_in_max_context": 12,
+  "validation_examples": [
+    {
+      "site_id": "chr1:13221:+:ENSG00000223972.5",
+      "strand": "+",
+      "acceptor_23mer": "TAGCCTCTGTTCCCACGAAGGCA",
+      "center_dinucleotide": "AG",
+      "canonical_acceptor": true
+    },
+    {
+      "site_id": "chr1:30564:+:ENSG00000243485.5",
+      "strand": "+",
+      "acceptor_23mer": "ACACTCTCTCCCTCTCCCAGTTT",
+      "center_dinucleotide": "AG",
+      "canonical_acceptor": true
+    },
+    {
+      "site_id": "chr1:781937:+:ENSG00000237491.8",
+      "strand": "+",
+      "acceptor_23mer": "TTTTCCCTTATTTCTTTTAGGCA",
+      "center_dinucleotide": "AG",
+      "canonical_acceptor": true
+    },
+    {
+      "site_id": "chr1:16765:-:ENSG00000227232.5",
+      "strand": "-",
+      "acceptor_23mer": "CCCCACACTTTGTGTTTCAGACC",
+      "center_dinucleotide": "AG",
+      "canonical_acceptor": true
+    },
+    {
+      "site_id": "chr1:17055:-:ENSG00000227232.5",
+      "strand": "-",
+      "acceptor_23mer": "GTCCCTGCCTAATCTTGCAGGTC",
+      "center_dinucleotide": "AG",
+      "canonical_acceptor": true
+    },
+    {
+      "site_id": "chr1:17368:-:ENSG00000227232.5",
+      "strand": "-",
+      "acceptor_23mer": "CCCCCATGTCGCCTCTGTAGGTA",
+      "center_dinucleotide": "AG",
+      "canonical_acceptor": true
+    }
+  ],
+  "sites_source": "results/person_b_acceptors_chr1-4.tsv",
+  "prepared_sequence_dir": "data/processed/grch38_contigs",
+  "sequence_file": "data/processed/person_b_acceptors_chr1-4.sequences.npy",
+  "metadata_file": "data/processed/person_b_acceptors_chr1-4.metadata.tsv.gz"
+}
