@@ -17,8 +17,9 @@ context is needed for an accurate prediction?
 2. **Labels.** Run [McSplicer](https://github.com/canzarlab/McSplicer)
    on each replicate to estimate usage for each donor and acceptor site.
 3. **Replicate QC.** Measure how well the replicates agree before deciding
-   whether and how to combine them. This agreement is roughly the best score
-   a model can reach.
+   whether and how to combine them. This agreement is a replicate-reproducibility
+   (noise) benchmark for the labels, to report next to model results; it is not a
+   strict limit on model performance.
 4. **Dataset.** Filter by read support and build a site table
    (chrom, position, strand, site type, usage, coverage, gene).
 5. **Sequences.** Extract windows around each site for each context
@@ -45,14 +46,18 @@ More detail is in [`implementation_plan.md`](implementation_plan.md).
       (`docs/encode_inputs.md`, `config.yaml`)
 - [x] Decided: first regression target is internal **acceptor** usage only (McSplicer
       donor values are near-binary); K562 reads are counted strand-aware
-- [ ] Download the full BAMs and run the strand-aware McSplicer pipeline
-- [ ] Replicate agreement, then the read-support threshold and replicate combination
-      (deliberately undecided)
-- [ ] Dataset, sequences, splits (test chromosomes are provisional), baselines, CNNs
+- [x] Strand-aware McSplicer runner, internal-acceptor parser with read support, and label
+      table builder (`docs/usage_labels.md`)
+- [x] Both BAMs downloaded; chr1-4 processed in both replicates; interim replicate QC
+      (`results/replicate_qc_chr1-4.*`, `figures/qc_[A-D]_*_chr1-4.png`)
+- [ ] The rest of the genome for both replicates
+- [ ] Read-support threshold and replicate combination (deliberately undecided; the threshold
+      will be chosen on training/validation chromosomes only)
+- [ ] Sequences, splits (test chromosomes are provisional), baselines, CNNs
 
-**The full BAMs have not been downloaded and there are no model results yet.** The
-pipeline modules in `src/` (except `config.py` and `src/validation/`) are still stubs
-with docstrings and TODOs.
+**Only chr1-4 have been processed in both replicates (39,382 clean matched acceptors), and there
+are no model results yet.** `src/extract_sequences.py`, `src/make_splits.py`, `src/inspect_data.py`
+and `models/` are still stubs with docstrings and TODOs.
 
 ## Repository structure
 
@@ -83,7 +88,7 @@ mlfungen/
 │   └── cnn.py               # CNNs per context length (not implemented yet)
 ├── analysis/
 │   ├── eda.py               # exploratory analysis and QC plots
-│   └── evaluate.py          # metrics vs replicate ceiling
+│   └── evaluate.py          # metrics vs replicate benchmark
 ├── figures/
 ├── results/
 └── notebooks/

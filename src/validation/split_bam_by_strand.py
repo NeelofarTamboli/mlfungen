@@ -20,13 +20,16 @@ import sys
 from src.validation.check_strand import fragment_strand
 
 
-def split(in_bam: str, prefix: str) -> dict[str, int]:
+def split(in_bam: str, prefix: str, contig: str | None = None, start: int | None = None, end: int | None = None) -> dict[str, int]:
+    """Split in_bam by fragment strand. With `contig` (and optional 0-based start/end) only that
+    chromosome/region is read, which needs a .bai; without it the whole file is read in order."""
     import pysam
 
     src = pysam.AlignmentFile(in_bam)
     outs = {"+": pysam.AlignmentFile(f"{prefix}_plus.bam", "wb", template=src), "-": pysam.AlignmentFile(f"{prefix}_minus.bam", "wb", template=src)}
     n = {"+": 0, "-": 0}
-    for read in src.fetch(until_eof=True):
+    reads = src.fetch(contig, start, end) if contig else src.fetch(until_eof=True)
+    for read in reads:
         s = fragment_strand(read)
         outs[s].write(read)
         n[s] += 1
