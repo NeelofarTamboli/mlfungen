@@ -151,6 +151,16 @@ python -m src.run_part_b \
   --target mean
 ```
 
+Train the minimal short-context CNNs after the sequence and split artifacts exist:
+
+```bash
+python -m models.train_cnn --context 80 --target mean
+python -m models.train_cnn --context 400 --target mean
+```
+
+Each command selects the best checkpoint by validation MAE and writes the model
+to `results/cnn_<context>bp_<target>.pt` plus a JSON validation/test summary.
+
 The extractor stores only the largest 10 kb context as compact integer nucleotide
 codes. The 80, 400 and 2,000 bp contexts are centred views, and one-hot arrays are
 created per batch.
