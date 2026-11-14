@@ -9,3 +9,7 @@ matplotlib>=3.7
 pysam>=0.22          # src/validation (BAM handling); also needs curl
 torch>=2.0           # models/cnn.py
 maxentpy @ git+https://github.com/kepbod/maxentpy.git@b5e69aadd745fcd9ee65c9dd0ff21b902a63a825
+# models/pretrained_baselines.py only (large; install separately if needed):
+#   torch above; a CPU-only build is much smaller: pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   tensorflow-cpu>=2.20 and spliceai==1.3.1 (pip install --no-deps spliceai)
+#   Pangolin: git clone https://github.com/tkzeng/Pangolin external/Pangolin (weights are in the repo)

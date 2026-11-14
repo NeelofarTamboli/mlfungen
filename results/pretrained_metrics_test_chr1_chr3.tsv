@@ -1,0 +1,9 @@
+subset	model	score_type	n_sites	pearson	spearman	r2	mae
+all	Training mean	usage (trained on chr2, chr4 val)	23474			-0.0013	0.2709
+all	Ridge regression	usage (trained on chr2, chr4 val)	23474	0.2519	0.1704	0.0633	0.2611
+all	Gradient boosting	usage (trained on chr2, chr4 val)	23474	0.2857	0.1884	0.0813	0.2570
+all	SpliceAI	splice-site probability	23474	0.5579	0.3957		
+alternative_0.1_to_0.9	Training mean	usage (trained on chr2, chr4 val)	11344			-0.1960	0.1954
+alternative_0.1_to_0.9	Ridge regression	usage (trained on chr2, chr4 val)	11344	0.1876	0.1431	-0.1564	0.1919
+alternative_0.1_to_0.9	Gradient boosting	usage (trained on chr2, chr4 val)	11344	0.2080	0.1653	-0.1614	0.1907
+alternative_0.1_to_0.9	SpliceAI	splice-site probability	11344	0.3480	0.2848		
