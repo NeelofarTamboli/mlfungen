@@ -12,7 +12,6 @@ python -m src.download_data gtf
 
 # per replicate (rep1 = ENCFF864OUS, rep2 = ENCFF696CSX); ~10-13 GB each, md5-checked
 python -m src.download_data bam rep1
-python -c "import pysam; pysam.index('data/raw/ENCFF864OUS.bam')"      # ENCODE ships no .bai
 python -m src.run_mcsplicer --bam data/raw/ENCFF864OUS.bam --out data/interim/mcsplicer/rep1 --bootstraps 0 --jobs 3
 python -m src.parse_mcsplicer --rep-dir data/interim/mcsplicer/rep1    # -> data/processed/acceptors_rep1.tsv
 

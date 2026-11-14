@@ -22,7 +22,7 @@ Output layout (nothing is deleted except the temporary split BAMs):
 Usage:
     python -m src.run_mcsplicer --bam data/raw/ENCFF864OUS.bam --out data/interim/mcsplicer/rep1
     python -m src.run_mcsplicer --bam region.bam --region chr1:111420000-111480000 --out DIR
-The BAM must be coordinate-sorted and indexed (ENCODE ships no .bai: `pysam.index(bam)`).
+The BAM must be coordinate-sorted. A missing `.bai` index is created automatically.
 McSplicer is not in the repo: git clone https://github.com/canzarlab/McSplicer external/McSplicer
 (tested at commit d6a22c3). The bundled binaries are Linux x86_64; bin_osx is untested.
 """
@@ -39,6 +39,7 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -47,6 +48,33 @@ from src.config import REPO_ROOT, load_config
 from src.validation.split_bam_by_strand import split
 
 STRAND_NAME = {"+": "plus", "-": "minus"}
+
+
+def ensure_bam_index(bam: Path) -> None:
+    """Create the BAM index required for chromosome/region fetches."""
+    import pysam
+
+    if bam.with_name(bam.name + ".bai").exists() or bam.with_suffix(".bai").exists():
+        return
+    print(f"indexing BAM: {bam} (progress is reported by elapsed time)", flush=True)
+    error: list[BaseException] = []
+
+    def index() -> None:
+        try:
+            pysam.index(str(bam))
+        except BaseException as exc:  # re-raise in the calling thread
+            error.append(exc)
+
+    started = time.monotonic()
+    worker = threading.Thread(target=index, daemon=True)
+    worker.start()
+    while worker.is_alive():
+        worker.join(timeout=30)
+        if worker.is_alive():
+            print(f"  BAM indexing still running ({time.monotonic() - started:.0f} seconds elapsed)", flush=True)
+    if error:
+        raise error[0]
+    print(f"BAM index created in {time.monotonic() - started:.1f} seconds", flush=True)
 
 
 def mcsplicer_tools(mc_dir: Path, sigcount: str = "sigcount") -> dict[str, Path]:
@@ -293,6 +321,7 @@ def main() -> None:
         chroms, region = [m.group(1)], (int(m.group(2)), int(m.group(3)))
     mc_dir = REPO_ROOT / mc["dir"]
     tools = mcsplicer_tools(mc_dir, mc["sigcount_binary"])
+    ensure_bam_index(Path(a.bam))
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     commit = subprocess.run(["git", "-C", str(mc_dir), "rev-parse", "HEAD"], capture_output=True, text=True, check=False).stdout.strip()
