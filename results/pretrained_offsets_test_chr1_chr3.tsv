@@ -1,0 +1,10 @@
+output	-2	-1	0	1	2
+pangolin_brain_p_splice	0.0520	0.0515	0.7524	0.0518	0.0520
+pangolin_brain_usage	0.0006	0.0003	0.7473	0.0000	0.0002
+pangolin_heart_p_splice	0.0518	0.0509	0.7149	0.0517	0.0509
+pangolin_heart_usage	0.0006	0.0003	0.7519	0.0000	0.0002
+pangolin_liver_p_splice	0.0518	0.0509	0.7102	0.0518	0.0514
+pangolin_liver_usage	0.0006	0.0003	0.7285	0.0000	0.0002
+pangolin_testis_p_splice	0.0514	0.0514	0.7750	0.0512	0.0520
+pangolin_testis_usage	0.0006	0.0003	0.7444	0.0000	0.0002
+spliceai_acceptor	0.0007	0.0002	0.8158	0.0000	0.0033
