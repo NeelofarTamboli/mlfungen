@@ -131,24 +131,24 @@ Run scripts from the repository root as modules, e.g.
 ### Person B: sequences and preliminary baselines
 
 ```bash
+python -m src.build_dataset   # also writes results/person_b_acceptors_all.tsv
 python -m src.run_part_b
 ```
 
 That single, resumable command downloads the reference if needed, extracts the
-sequences, makes the chromosome split, fits the local baselines and writes the
-evaluation metrics. Existing stage outputs are skipped; use `--force` to rerun
-them. To run selected stages only, use, for example,
+sequences, makes the chromosome split (validation chr2 + chr4), fits the local
+baselines and writes the evaluation metrics. It defaults to the full-genome
+handoff, with output files tagged `all`. Existing stage outputs are skipped; use
+`--force` to rerun them. To run selected stages only, use, for example,
 `python -m src.run_part_b --steps split baseline --force`.
 
-When the full-genome handoff arrives, use a new tag so the preliminary chr1-4
-artifacts are not overwritten:
+The earlier preliminary chr1-4 artifacts keep their own tag; to regenerate them:
 
 ```bash
 python -m src.run_part_b \
-  --sites results/person_b_acceptors_all.tsv \
-  --tag all \
-  --validation chr2 chr4 \
-  --target mean
+  --sites results/person_b_acceptors_chr1-4.tsv \
+  --tag chr1-4 \
+  --validation chr4
 ```
 
 Train the minimal short-context CNNs after the sequence and split artifacts exist:
