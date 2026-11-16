@@ -4,15 +4,14 @@ This is the one user-facing entry point for the modules in ``src/``, ``models/``
 and ``analysis/``. Large/reproducible artifacts are kept under git-ignored
 ``data/``; only code and compact QC/metric summaries go under ``results/``.
 
-Current chr1-4 handoff (preliminary target/split):
+Full-genome handoff (the default; validation chr2 + chr4, target mean):
     python -m src.run_part_b
 
-Later full-genome handoff, for example:
+Earlier preliminary chr1-4 handoff:
     python -m src.run_part_b \
-      --sites results/person_b_acceptors_all.tsv \
-      --tag all \
-      --validation chr2 chr4 \
-      --target mean
+      --sites results/person_b_acceptors_chr1-4.tsv \
+      --tag chr1-4 \
+      --validation chr4
 
 The runner is resumable: an existing stage output is skipped. Pass ``--force``
 to recompute selected stages, and ``--steps`` to run only part of the pipeline.
@@ -40,9 +39,9 @@ def run(command: list[str]) -> None:
 def main() -> None:
     cfg = load_config()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--sites", default="results/person_b_acceptors_chr1-4.tsv", help="portable input TSV path")
-    ap.add_argument("--tag", default="chr1-4", help="short label used in generated file names")
-    ap.add_argument("--validation", nargs="+", default=["chr4"], help="validation chromosomes")
+    ap.add_argument("--sites", default="results/person_b_acceptors_all.tsv", help="portable input TSV path")
+    ap.add_argument("--tag", default="all", help="short label used in generated file names")
+    ap.add_argument("--validation", nargs="+", default=["chr2", "chr4"], help="validation chromosomes")
     ap.add_argument("--target", choices=["rep1", "rep2", "mean"], default="mean")
     ap.add_argument("--steps", nargs="+", choices=STAGES, default=list(STAGES))
     ap.add_argument("--force", action="store_true", help="recompute outputs that already exist")

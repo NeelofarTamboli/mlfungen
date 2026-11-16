@@ -20,7 +20,8 @@ Output: data/processed/acceptor_labels.tsv, one row per site, columns
     spliced_in_rep1/2, contiguous_in_rep1/2, n_incompat_warnings_rep1/2,
     in_rep1, in_rep2, in_both, index_rep1/2, raw_csv_rep1/2        <- QC flags and trace back to raw output
 
-With --handoff it also writes the compact table for the sequence-extraction step (primary-QC sites only):
+It also writes the compact table for the sequence-extraction step (primary-QC sites only), by default
+to results/person_b_acceptors_all.tsv for a genome-wide run (with --chroms only when --handoff is given):
     site_id, gene_id, chrom, locus, strand, usage_rep1/2, read_support_rep1/2, also_transcript_start, in_primary_qc
 
 Usage:
@@ -34,7 +35,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.config import load_config, project_path
+from src.config import REPO_ROOT, load_config, project_path
 
 KEY = ["gene_id", "chrom", "locus", "strand"]
 PER_REP = ["usage", "bootstrap_sd", "n_bootstraps", "read_support", "spliced_in", "contiguous_in", "n_incompat_warnings", "index", "raw_csv",
@@ -89,8 +90,11 @@ def main() -> None:
     ap.add_argument("--rep2", default=str(proc / "acceptors_rep2.tsv"))
     ap.add_argument("--out", default=str(proc / "acceptor_labels.tsv"))
     ap.add_argument("--chroms", nargs="+", help="only these chromosomes (e.g. chr1 chr2 chr3 chr4)")
-    ap.add_argument("--handoff", help="also write the compact primary-QC table for the sequence step to this path")
+    ap.add_argument("--handoff", help="also write the compact primary-QC table for the sequence step to this path "
+                    "(default: results/person_b_acceptors_all.tsv for a genome-wide run, none with --chroms)")
     a = ap.parse_args()
+    if a.handoff is None and not a.chroms:
+        a.handoff = str(REPO_ROOT / "results" / "person_b_acceptors_all.tsv")
     df = build(Path(a.rep1), Path(a.rep2), a.chroms)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(a.out, sep="\t", index=False)

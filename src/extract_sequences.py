@@ -18,7 +18,7 @@ Outputs for ``--out-prefix PREFIX``:
 
 Example:
     python -m src.extract_sequences \
-      --sites results/person_b_acceptors_chr1-4.tsv \
+      --sites results/person_b_acceptors_all.tsv \
       --prepare-reference
 """
 
@@ -273,9 +273,9 @@ def extract_sequences(
 
 def main() -> None:
     cfg = load_config()
-    default_sites = REPO_ROOT / "results" / "person_b_acceptors_chr1-4.tsv"
+    default_sites = REPO_ROOT / "results" / "person_b_acceptors_all.tsv"
     default_seq_dir = project_path(cfg, "data_processed") / "grch38_contigs"
-    default_prefix = project_path(cfg, "data_processed") / "person_b_acceptors_chr1-4"
+    default_prefix = project_path(cfg, "data_processed") / "person_b_acceptors_all"
     default_fasta = REPO_ROOT / cfg["reference"]["genome_fasta"]
 
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -283,7 +283,7 @@ def main() -> None:
     ap.add_argument("--fasta", default=str(default_fasta))
     ap.add_argument("--sequence-dir", default=str(default_seq_dir))
     ap.add_argument("--out-prefix", default=str(default_prefix))
-    ap.add_argument("--qc-out", default=str(project_path(cfg, "results") / "sequence_qc_chr1-4.json"))
+    ap.add_argument("--qc-out", default=str(project_path(cfg, "results") / "sequence_qc_all.json"))
     ap.add_argument("--contexts", nargs="+", type=int, default=cfg["sequence"]["context_lengths"])
     ap.add_argument("--prepare-reference", action="store_true", help="extract the required contigs from the FASTA first")
     ap.add_argument("--prepare-only", action="store_true", help="prepare contigs but do not extract site windows")

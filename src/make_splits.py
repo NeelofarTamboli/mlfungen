@@ -49,14 +49,14 @@ def split_summary(sites: pd.DataFrame) -> pd.DataFrame:
 
 def main() -> None:
     cfg = load_config()
-    default_input = project_path(cfg, "data_processed") / "person_b_acceptors_chr1-4.metadata.tsv.gz"
-    default_output = project_path(cfg, "data_processed") / "person_b_acceptors_chr1-4.splits.tsv.gz"
+    default_input = project_path(cfg, "data_processed") / "person_b_acceptors_all.metadata.tsv.gz"
+    default_output = project_path(cfg, "data_processed") / "person_b_acceptors_all.splits.tsv.gz"
     results = project_path(cfg, "results")
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--sites", default=str(default_input))
     ap.add_argument("--out", default=str(default_output))
-    ap.add_argument("--summary-out", default=str(results / "split_counts_chr1-4.tsv"))
-    ap.add_argument("--settings-out", default=str(results / "split_settings_chr1-4.json"))
+    ap.add_argument("--summary-out", default=str(results / "split_counts_all.tsv"))
+    ap.add_argument("--settings-out", default=str(results / "split_settings_all.json"))
     ap.add_argument("--test", nargs="+", default=cfg["splits"]["test_chromosomes"])
     ap.add_argument("--validation", nargs="+", default=cfg["splits"]["validation_chromosomes"])
     args = ap.parse_args()
