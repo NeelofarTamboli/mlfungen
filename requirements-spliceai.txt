@@ -1,0 +1,13 @@
+# Separate environment for the pretrained SpliceAI baseline (src/score_pretrained.py --model spliceai).
+# Kept apart from the main .venv so TensorFlow cannot change numpy/pandas under the pipeline.
+#   python3 -m venv external/spliceai-env
+#   external/spliceai-env/bin/pip install -r requirements-spliceai.txt
+# SpliceAI itself is not pip-installed: git clone https://github.com/Illumina/SpliceAI external/SpliceAI
+# (tested at 03f4243); its .h5 models are Keras 2, hence tf_keras.
+# On a GPU machine replace tensorflow-cpu with tensorflow[and-cuda]==2.21.0.
+tensorflow-cpu==2.21.0
+tf_keras==2.21.0
+h5py==3.14.0
+numpy==2.5.4
+pandas==3.1.1
+pyyaml==6.0.3
