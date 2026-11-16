@@ -1,0 +1,17 @@
+{
+  "context": 80,
+  "target": "mean",
+  "device": "cpu",
+  "n_train": 89776,
+  "n_validation": 15908,
+  "n_test": 42738,
+  "validation": {
+    "mae": 0.24006034433841705,
+    "rmse": 0.30359584921495414
+  },
+  "test": {
+    "mae": 0.2468390017747879,
+    "rmse": 0.3082391536526121
+  },
+  "checkpoint": "results/cnn_80bp_mean.pt"
+}

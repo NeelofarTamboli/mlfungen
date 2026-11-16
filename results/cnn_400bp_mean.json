@@ -1,0 +1,17 @@
+{
+  "context": 400,
+  "target": "mean",
+  "device": "cpu",
+  "n_train": 89776,
+  "n_validation": 15908,
+  "n_test": 42738,
+  "validation": {
+    "mae": 0.24079576134681702,
+    "rmse": 0.30371843187708186
+  },
+  "test": {
+    "mae": 0.247208371758461,
+    "rmse": 0.3080317776390929
+  },
+  "checkpoint": "results/cnn_400bp_mean.pt"
+}

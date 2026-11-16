@@ -1,0 +1,7 @@
+split	site_type	subset	model	n_sites	pearson	spearman	r2	mae
+test	acceptor	all	mean	42738			-0.00185097	0.273322
+test	acceptor	alternative_0.1_to_0.9	mean	20693			-0.111419	0.189088
+test	acceptor	all	ridge	42738	0.26307	0.182288	0.068652	0.257776
+test	acceptor	alternative_0.1_to_0.9	ridge	20693	0.17481	0.126597	-0.156904	0.189404
+test	acceptor	all	gradient_boosting	42738	0.310392	0.210206	0.0961243	0.252789
+test	acceptor	alternative_0.1_to_0.9	gradient_boosting	20693	0.211011	0.166335	-0.140465	0.186473
